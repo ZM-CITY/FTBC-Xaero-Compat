@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.ftbu.xaerocompat.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "com.ftbu.xaerocompat.mixin.MinimapMixinPlugin",
+  "client": [
+    "MinimapSessionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

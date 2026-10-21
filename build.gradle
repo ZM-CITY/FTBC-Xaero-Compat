@@ -1,0 +1,123 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = '1.0.0'
+group = 'com.ftbu.xaerocompat'
+archivesBaseName = 'ftbcxaerocompat'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    copyIdeResources = true
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            // Xaero's mods ship production refmaps; remap them for the dev runtime.
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                ftbcxaerocompat {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                ftbcxaerocompat {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    maven {
+        name = 'FTB'
+        url = 'https://maven.ftb.dev/releases'
+        content { includeGroup 'dev.ftb.mods' }
+    }
+    maven {
+        name = 'Architectury'
+        url = 'https://maven.architectury.dev/'
+    }
+    maven {
+        name = 'Sponge'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.1.47'
+
+    compileOnly fg.deobf('dev.ftb.mods:ftb-chunks-forge:2001.3.8') { transitive = false }
+    compileOnly fg.deobf('dev.ftb.mods:ftb-teams-forge:2001.3.1') { transitive = false }
+    compileOnly fg.deobf('dev.ftb.mods:ftb-library-forge:2001.2.9') { transitive = false }
+    compileOnly fg.deobf('dev.architectury:architectury-forge:9.1.12') { transitive = false }
+    compileOnly files('libs/xaeroworldmap-forge-1.20.1-1.45.0.jar')
+    compileOnly files('libs/xaerominimap-forge-1.20.1-26.4.2.jar')
+    compileOnly files('libs/xaerolib-forge-1.20.1-1.7.1.jar')
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            mod_version: project.version
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'     : 'ftbcxaerocompat',
+                'Specification-Vendor'    : 'ZeroMetropolis',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.version,
+                'Implementation-Vendor'   : 'ZeroMetropolis',
+                'MixinConfigs'            : 'ftbcxaerocompat.mixins.json,ftbcxaerocompat.minimap.mixins.json'
+        ])
+    }
+}
+
+tasks.register('copyJarToRoot') {
+    dependsOn tasks.named('reobfJar')
+    doLast {
+        copy {
+            from layout.buildDirectory.file("libs/${archivesBaseName}-${project.version}.jar")
+            into project.projectDir
+        }
+    }
+}
+
+tasks.named('build') {
+    finalizedBy tasks.named('copyJarToRoot')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = "file://${project.projectDir}/repo"
+        }
+    }
+}

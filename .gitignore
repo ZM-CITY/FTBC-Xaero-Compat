@@ -1,0 +1,44 @@
+# Gradle
+.gradle/
+build/
+out/
+repo/
+
+# Forge / Minecraft run directories
+run/
+run-prod/
+logs/
+crash-reports/
+
+# Build artifacts and local jars
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.class
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.metadata/
+.project
+.classpath
+bin/
+*.launch
+
+# Logs and crash dumps
+*.log
+hs_err_pid*
+replay_pid*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local-only files (not source)
+backups/
+外部文件/
+libs/

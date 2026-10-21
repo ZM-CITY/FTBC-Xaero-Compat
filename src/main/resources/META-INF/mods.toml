@@ -1,0 +1,68 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "LGPL-3.0-only"
+
+[[mods]]
+modId = "ftbcxaerocompat"
+version = "${mod_version}"
+displayName = "FTBC Xaero Compat"
+authors = "ZeroMetropolis"
+description = '''
+Provides compatibility between FTBC and Xaero.
+'''
+
+[[dependencies.ftbcxaerocompat]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "ftbchunks"
+mandatory = true
+versionRange = "[2001.1.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "ftbteams"
+mandatory = true
+versionRange = "[2001.1.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "ftblibrary"
+mandatory = true
+versionRange = "[2001.1.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "xaeroworldmap"
+mandatory = true
+versionRange = "[1.45.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "xaerominimap"
+mandatory = false
+versionRange = "[26.0.0,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.ftbcxaerocompat]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9,)"
+ordering = "NONE"
+side = "CLIENT"
